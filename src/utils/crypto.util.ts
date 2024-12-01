@@ -26,7 +26,7 @@ export const decryptText = async (content64: string, passwordHex: string): Promi
     const password = hexToBytes(passwordHex);
     const nonce = hexToBytes(content64.substring(0, NONCE_STR_SIZE));
     const cipher = xchacha20poly1305(password, nonce);
-    return decompress(cipher.decrypt(content), { to: "string" });
+    return decompress(cipher.decrypt(content));
   } catch (e) {
     return "";
   }
