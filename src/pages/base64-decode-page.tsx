@@ -32,12 +32,12 @@ export default function Base64DecodePage() {
 
   const handleIsUrlSafeChange = (input: boolean) => {
     setIsUrlSafe(input);
-    setSearchParams({ url: input });
+    setSearchParams({ url: input }, { replace: true });
   };
 
   const handleWithCompressionChange = (input: boolean) => {
     setWithCompression(input);
-    setSearchParams({ zlib: input });
+    setSearchParams({ zlib: input }, { replace: true });
   };
 
   onMount(() => {

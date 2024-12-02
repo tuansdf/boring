@@ -9,8 +9,8 @@ type Props = {
 } & ComponentProps<"textarea">;
 
 export const Textarea = (props: Props) => {
-  const id = createUniqueId();
   const [local, others] = splitProps(props, ["class", "errorMessage", "letterCount", "maxLetterCount", "id", "label"]);
+  const id = createUniqueId();
 
   return (
     <div>
