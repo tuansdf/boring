@@ -1,0 +1,28 @@
+.container {
+  position: relative;
+  transition: opacity 100ms ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.dropzone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 20rem;
+  background-color: var(--bs-body-bg);
+  border: 1px dashed var(--bs-primary);
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.input {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  opacity: 0;
+}

@@ -11,7 +11,7 @@ export const validateUrl = (input: string): boolean => {
 
 export const debounce = <TFn extends (...args: any[]) => any>(
   fn: TFn,
-  ms: number = 100,
+  ms: number = 200,
 ): ((...args: Parameters<TFn>) => void) => {
   let timeout: ReturnType<typeof setTimeout>;
   return (...args: Parameters<TFn>) => {
