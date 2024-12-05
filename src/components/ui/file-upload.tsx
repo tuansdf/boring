@@ -1,15 +1,10 @@
 import { ScreenLoading } from "@/components/ui/screen-loading.tsx";
+import { COMPRESS_IMAGE_OPTIONS } from "@/types/compress-image.type.ts";
 import { cn } from "@/utils/classnames.ts";
 import { downloadFile } from "@/utils/file.util.ts";
-import { COMPRESS_IMAGE_OPTIONS, compressImage } from "@/utils/image.util.ts";
+import { compressImages } from "@/utils/image.util.ts";
 import { ComponentProps, createSignal, createUniqueId, Show, splitProps } from "solid-js";
 import classes from "src/components/ui/file-upload.module.scss";
-
-const compressAndDownloadImage = async (file: File, options: COMPRESS_IMAGE_OPTIONS, onSuccess?: () => any) => {
-  const compressed = await compressImage(file, options);
-  downloadFile(compressed);
-  await onSuccess?.();
-};
 
 type Props = {
   withCompression?: boolean | COMPRESS_IMAGE_OPTIONS;
@@ -21,7 +16,7 @@ export const FileUpload = (props: Props) => {
   const [local, others] = splitProps(props, ["class", "type", "onInput", "withCompression", "id"]);
   const [isLoading, setIsLoading] = createSignal(false);
 
-  const handleCompressImages = async (files: FileList | null) => {
+  const handleCompressImages = async (files: File[] | null) => {
     try {
       if (!files || !local.withCompression) return;
       if ((typeof props.withCompression === "boolean" && props.withCompression) || props.withCompression) {
@@ -31,12 +26,10 @@ export const FileUpload = (props: Props) => {
         if (typeof props.withCompression !== "boolean") {
           compressOptions = props.withCompression;
         }
-        const promises: Promise<any>[] = [];
-        for (let i = 0; i < files.length; i++) {
-          if (!files[i].type.startsWith("image/")) continue;
-          promises.push(compressAndDownloadImage(files[i], compressOptions));
-        }
-        await Promise.all(promises);
+        const compressedFiles = await compressImages({ files, options: compressOptions });
+        compressedFiles.forEach((file) => {
+          downloadFile(file);
+        });
       }
     } catch (e) {
       console.error(e);
@@ -63,7 +56,7 @@ export const FileUpload = (props: Props) => {
                 local.onInput?.(e);
               }
             } catch (e) {}
-            await handleCompressImages(e.currentTarget.files);
+            await handleCompressImages(e.currentTarget.files as File[] | null);
             inputRef.value = "";
           }}
           {...others}

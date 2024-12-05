@@ -5,8 +5,8 @@ import { Select } from "@/components/ui/select.tsx";
 import { createSignal } from "solid-js";
 
 export default function ImageCompressorPage() {
-  const [quality, setQuality] = createSignal<number>(0.8);
-  const [maxWidthOrHeight, setMaxWidthOrHeight] = createSignal<number>(10000);
+  const [quality, setQuality] = createSignal<number>(0.9);
+  const [maxWidthOrHeight, setMaxWidthOrHeight] = createSignal<number>(4000);
   const [fileType, setFileType] = createSignal<string>("image/webp");
 
   return (
