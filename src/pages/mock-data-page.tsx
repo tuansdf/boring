@@ -1,23 +1,31 @@
 import { Header } from "@/components/layout/header.tsx";
+import { ScreenLoading } from "@/components/ui/screen-loading.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
 import { debounce } from "@/utils/common.util.ts";
-import { generateJSONs } from "@/utils/mock.util.ts";
-import { createSignal } from "solid-js";
+import { generateMockDataJsonString } from "@/utils/mock-data.util.ts";
+import { createSignal, Show } from "solid-js";
 
 export default function MockDataPage() {
+  const [isLoading, setIsLoading] = createSignal<boolean>(false);
   const [input, setInput] = createSignal<string>("");
   const [output, setOutput] = createSignal<string>("");
 
   const handleSubmit = async () => {
     try {
+      setIsLoading(true);
+      await new Promise((r) => setTimeout(r, 100));
       if (!input()) return;
       const req = JSON.parse(input());
-      const res = JSON.stringify(await generateJSONs(req), null, 2);
-      setOutput(res);
-    } catch {}
+      const data = await generateMockDataJsonString(req);
+      setOutput(data);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleSubmitDebounced = debounce(handleSubmit, 500);
+  const handleSubmitDebounced = debounce(handleSubmit, 300);
 
   return (
     <>
@@ -37,6 +45,10 @@ export default function MockDataPage() {
           <Textarea label="Output" value={output()} readOnly rows={12} />
         </form>
       </div>
+
+      <Show when={isLoading()}>
+        <ScreenLoading />
+      </Show>
     </>
   );
 }
