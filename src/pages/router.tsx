@@ -19,6 +19,10 @@ const routes = [
     component: lazy(() => import("@/pages/mock-data-page.tsx")),
   },
   {
+    path: "/lorem-ipsum",
+    component: lazy(() => import("@/pages/lorem-page.tsx")),
+  },
+  {
     path: "/*",
     component: () => <Navigate href="/" />,
   },
