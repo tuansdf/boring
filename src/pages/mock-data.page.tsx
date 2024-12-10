@@ -2,7 +2,7 @@ import { Header } from "@/components/layout/header.tsx";
 import { ScreenLoading } from "@/components/ui/screen-loading.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
 import { debounce } from "@/utils/common.util.ts";
-import { generateMockDataJsonString } from "@/utils/mock-data.util.ts";
+import { generateMockDataJsonString } from "@/features/mock-data/mock-data.util.ts";
 import { createSignal, Show } from "solid-js";
 
 export default function MockDataPage() {

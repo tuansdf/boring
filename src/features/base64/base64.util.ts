@@ -1,4 +1,4 @@
-import { compress, decompress } from "@/utils/compression.ts";
+import { compressText, decompressText } from "@/features/base64/compress-text.util.ts";
 import { bytesToUtf8 } from "@noble/ciphers/utils";
 import { base64, base64urlnopad } from "@scure/base";
 
@@ -10,7 +10,7 @@ export const encodeBase64 = (
 ): string => {
   const encodeFn = options.url ? base64urlnopad.encode : base64.encode;
   let bytes: Uint8Array = options.compression
-    ? compress(input)
+    ? compressText(input)
     : typeof input === "string"
       ? textEncoder.encode(input)
       : input;
@@ -19,5 +19,5 @@ export const encodeBase64 = (
 export const decodeBase64 = (input: string, options: { url?: boolean; compression?: boolean } = {}): string => {
   const decodeFn = options.url ? base64urlnopad.decode : base64.decode;
   const decoded = decodeFn(input);
-  return options.compression ? decompress(decoded) : bytesToUtf8(decoded);
+  return options.compression ? decompressText(decoded) : bytesToUtf8(decoded);
 };

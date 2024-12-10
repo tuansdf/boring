@@ -1,4 +1,4 @@
-import { compress, decompress } from "@/utils/compression.ts";
+import { compressText, decompressText } from "@/features/base64/compress-text.util.ts";
 import { xchacha20poly1305 } from "@noble/ciphers/chacha";
 import { bytesToHex, hexToBytes } from "@noble/ciphers/utils";
 import { randomBytes } from "@noble/ciphers/webcrypto";
@@ -12,7 +12,7 @@ export const encryptText = async (contentStr: string, passwordHex: string): Prom
     const nonce = randomBytes(NONCE_BYTE_SIZE);
     const password = hexToBytes(passwordHex);
     const cipher = xchacha20poly1305(password, nonce);
-    let content = compress(contentStr);
+    let content = compressText(contentStr);
     let encrypted = cipher.encrypt(content);
     return bytesToHex(nonce) + base64.encode(encrypted);
   } catch (e) {
@@ -26,7 +26,7 @@ export const decryptText = async (content64: string, passwordHex: string): Promi
     const password = hexToBytes(passwordHex);
     const nonce = hexToBytes(content64.substring(0, NONCE_STR_SIZE));
     const cipher = xchacha20poly1305(password, nonce);
-    return decompress(cipher.decrypt(content));
+    return decompressText(cipher.decrypt(content));
   } catch (e) {
     return "";
   }

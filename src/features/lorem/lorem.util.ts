@@ -1,4 +1,4 @@
-import LoremWorker from "@/workers/lorem.worker.ts?worker";
+import LoremWorker from "@/features/lorem/lorem.worker.ts?worker";
 
 export const generateLorem = async (wordCount: number): Promise<string> => {
   if (wordCount < 1) wordCount = 1;

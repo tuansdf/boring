@@ -1,4 +1,4 @@
-import { COMPRESS_IMAGE_OPTIONS, COMPRESS_IMAGE_WORKER_PARAMS } from "@/types/compress-image.type.ts";
+import { COMPRESS_IMAGE_OPTIONS, COMPRESS_IMAGE_WORKER_PARAMS } from "@/features/compress-image/compress-image.type.ts";
 import imageCompression from "browser-image-compression";
 
 self.onmessage = async function (e) {

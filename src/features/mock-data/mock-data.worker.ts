@@ -1,4 +1,4 @@
-import { MockDataFn, MockDataFns, MockDataRequest, MockDataResult } from "@/types/mock-data.type.ts";
+import { MockDataFn, MockDataFns, MockDataRequest, MockDataResult } from "@/features/mock-data/mock-data.type.ts";
 import { faker } from "@faker-js/faker";
 
 const MAX_OBJECTS = 10_000;

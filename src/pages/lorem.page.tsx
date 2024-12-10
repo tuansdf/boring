@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input.tsx";
 import { ScreenLoading } from "@/components/ui/screen-loading.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
 import { debounce } from "@/utils/common.util.ts";
-import { generateLorem } from "@/utils/lorem.util.ts";
+import { generateLorem } from "@/features/lorem/lorem.util.ts";
 import { createSignal, Show } from "solid-js";
 
 export default function LoremPage() {

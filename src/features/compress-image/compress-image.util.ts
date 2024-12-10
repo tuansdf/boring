@@ -1,5 +1,5 @@
-import { COMPRESS_IMAGE_WORKER_PARAMS } from "@/types/compress-image.type.ts";
-import CompressImageWorker from "@/workers/compress-image.worker.ts?worker";
+import { COMPRESS_IMAGE_WORKER_PARAMS } from "@/features/compress-image/compress-image.type.ts";
+import CompressImageWorker from "@/features/compress-image/compress-image.worker.ts?worker";
 
 let worker: Worker | null = new CompressImageWorker();
 

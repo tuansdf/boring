@@ -1,5 +1,5 @@
-import { MockDataRequest } from "@/types/mock-data.type.ts";
-import MockDataWorker from "@/workers/mock-data.worker.ts?worker";
+import { MockDataRequest } from "@/features/mock-data/mock-data.type.ts";
+import MockDataWorker from "@/features/mock-data/mock-data.worker.ts?worker";
 
 export const generateMockDataJsonString = async (request: MockDataRequest): Promise<string> => {
   return new Promise((res) => {

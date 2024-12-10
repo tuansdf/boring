@@ -1,33 +1,60 @@
 import { Header } from "@/components/layout/header.tsx";
+import { Alert } from "@/components/ui/alert.tsx";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
-import { encodeBase64 } from "@/utils/base64.ts";
+import { decodeBase64 } from "@/features/base64/base64.util.ts";
 import { debounce } from "@/utils/common.util.ts";
-import { createSignal, Show } from "solid-js";
+import { useSearchParams } from "@solidjs/router";
+import { createSignal, onMount, Show } from "solid-js";
 
-export default function Base64EncodePage() {
+export default function Base64DecodePage() {
   const [input, setInput] = createSignal<string>("");
   const [output, setOutput] = createSignal<string>("");
   const [withCompression, setWithCompression] = createSignal<boolean>(false);
   const [isUrlSafe, setIsUrlSafe] = createSignal<boolean>(false);
+  const [errorMessage, setErrorMessage] = createSignal<string>("");
   const [processingTime, setProcessingTime] = createSignal<number | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleSubmit = () => {
     try {
+      setErrorMessage("");
       if (!input()) return setOutput("");
       const start = performance.now();
-      setOutput(encodeBase64(input(), { url: isUrlSafe(), compression: withCompression() }));
+      setOutput(decodeBase64(input(), { url: isUrlSafe(), compression: withCompression() }));
       setProcessingTime(performance.now() - start);
-    } catch {}
+    } catch {
+      setErrorMessage("Invalid data");
+    }
   };
 
   const handleSubmitDebounced = debounce(handleSubmit);
 
+  const handleIsUrlSafeChange = (input: boolean) => {
+    setIsUrlSafe(input);
+    setSearchParams({ url: input }, { replace: true });
+  };
+
+  const handleWithCompressionChange = (input: boolean) => {
+    setWithCompression(input);
+    setSearchParams({ zlib: input }, { replace: true });
+  };
+
+  onMount(() => {
+    setInput((searchParams.q as string) || "");
+    setIsUrlSafe(searchParams.url === "true");
+    setWithCompression(searchParams.zlib === "true");
+    handleSubmit();
+  });
+
   return (
     <>
-      <Header title="Base64 Encode" />
+      <Header title="Base64 Decode" />
 
       <div class="container-xxl p-3">
+        <Show when={errorMessage()}>
+          <Alert variant="danger">{errorMessage()}</Alert>
+        </Show>
         <form class="d-flex flex-column gap-3">
           <Textarea
             label="Input"
@@ -44,15 +71,15 @@ export default function Base64EncodePage() {
               label="URL-safe"
               checked={isUrlSafe()}
               onInput={(e) => {
-                setIsUrlSafe(e.currentTarget.checked);
+                handleIsUrlSafeChange(e.currentTarget.checked);
                 handleSubmitDebounced();
               }}
             />
             <Checkbox
-              label="Compress with zlib before encode"
+              label="Decompress with zlib after decode"
               checked={withCompression()}
               onInput={(e) => {
-                setWithCompression(e.currentTarget.checked);
+                handleWithCompressionChange(e.currentTarget.checked);
                 handleSubmitDebounced();
               }}
             />
