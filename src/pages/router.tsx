@@ -19,7 +19,7 @@ const routes = [
     component: lazy(() => import("@/pages/mock-data-page.tsx")),
   },
   {
-    path: "/lorem-ipsum",
+    path: "/lorem",
     component: lazy(() => import("@/pages/lorem-page.tsx")),
   },
   {

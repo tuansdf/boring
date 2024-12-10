@@ -5,8 +5,8 @@ import { ScreenLoading } from "@/components/ui/screen-loading.tsx";
 import { Select } from "@/components/ui/select.tsx";
 import { COMPRESS_IMAGE_OPTIONS } from "@/types/compress-image.type.ts";
 import { downloadFile } from "@/utils/file.util.ts";
-import { compressImages } from "@/utils/image.util.ts";
-import { createSignal, Show } from "solid-js";
+import { compressImages, terminateWorker } from "@/utils/image.util.ts";
+import { createSignal, onCleanup, onMount, Show } from "solid-js";
 
 export default function ImageCompressorPage() {
   const [quality, setQuality] = createSignal<number>(0.9);
@@ -37,6 +37,14 @@ export default function ImageCompressorPage() {
       setIsLoading(false);
     }
   };
+
+  onMount(() => {
+    window.addEventListener("beforeunload", terminateWorker);
+  });
+  onCleanup(() => {
+    terminateWorker();
+    window.removeEventListener("beforeunload", terminateWorker);
+  });
 
   return (
     <>
