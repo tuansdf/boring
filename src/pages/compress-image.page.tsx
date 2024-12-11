@@ -4,8 +4,12 @@ import { Input } from "@/components/ui/input.tsx";
 import { ScreenLoading } from "@/components/ui/screen-loading.tsx";
 import { Select } from "@/components/ui/select.tsx";
 import { COMPRESS_IMAGE_OPTIONS } from "@/features/compress-image/compress-image.type.ts";
+import {
+  compressImages,
+  initCompressImageWorker,
+  terminateCompressImageWorker,
+} from "@/features/compress-image/compress-image.util.ts";
 import { downloadFile } from "@/utils/file.util.ts";
-import { compressImages, terminateWorker } from "@/features/compress-image/compress-image.util.ts";
 import { createSignal, onCleanup, onMount, Show } from "solid-js";
 
 export default function CompressImagePage() {
@@ -39,16 +43,15 @@ export default function CompressImagePage() {
   };
 
   onMount(() => {
-    window.addEventListener("beforeunload", terminateWorker);
+    initCompressImageWorker();
   });
   onCleanup(() => {
-    terminateWorker();
-    window.removeEventListener("beforeunload", terminateWorker);
+    terminateCompressImageWorker();
   });
 
   return (
     <>
-      <Header title="Image Compressor" />
+      <Header title="Compress Image" />
 
       <div class="container-xxl p-3">
         <FileUpload

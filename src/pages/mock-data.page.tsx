@@ -1,9 +1,13 @@
 import { Header } from "@/components/layout/header.tsx";
 import { ScreenLoading } from "@/components/ui/screen-loading.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
+import {
+  generateMockDataJsonString,
+  initMockDataWorker,
+  terminateMockDataWorker,
+} from "@/features/mock-data/mock-data.util.ts";
 import { debounce } from "@/utils/common.util.ts";
-import { generateMockDataJsonString } from "@/features/mock-data/mock-data.util.ts";
-import { createSignal, Show } from "solid-js";
+import { createSignal, onCleanup, onMount, Show } from "solid-js";
 
 export default function MockDataPage() {
   const [isLoading, setIsLoading] = createSignal<boolean>(false);
@@ -26,6 +30,13 @@ export default function MockDataPage() {
   };
 
   const handleSubmitDebounced = debounce(handleSubmit, 300);
+
+  onMount(() => {
+    initMockDataWorker();
+  });
+  onCleanup(() => {
+    terminateMockDataWorker();
+  });
 
   return (
     <>

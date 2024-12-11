@@ -1,7 +1,7 @@
 import { COMPRESS_IMAGE_WORKER_PARAMS } from "@/features/compress-image/compress-image.type.ts";
 import CompressImageWorker from "@/features/compress-image/compress-image.worker.ts?worker";
 
-let worker: Worker | null = new CompressImageWorker();
+let worker: Worker | null = null;
 
 export const compressImages = async (request: COMPRESS_IMAGE_WORKER_PARAMS): Promise<File[]> => {
   return new Promise((res) => {
@@ -18,7 +18,11 @@ export const compressImages = async (request: COMPRESS_IMAGE_WORKER_PARAMS): Pro
   });
 };
 
-export const terminateWorker = () => {
+export const initCompressImageWorker = () => {
+  worker = new CompressImageWorker();
+};
+
+export const terminateCompressImageWorker = () => {
   worker?.terminate();
   worker = null;
 };

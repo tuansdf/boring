@@ -3,9 +3,9 @@ import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { ScreenLoading } from "@/components/ui/screen-loading.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
+import { generateLorem, initLoremWorker, terminateLoremWorker } from "@/features/lorem/lorem.util.ts";
 import { debounce } from "@/utils/common.util.ts";
-import { generateLorem } from "@/features/lorem/lorem.util.ts";
-import { createSignal, Show } from "solid-js";
+import { createSignal, onCleanup, onMount, Show } from "solid-js";
 
 export default function LoremPage() {
   const [output, setOutput] = createSignal<string>("");
@@ -30,6 +30,13 @@ export default function LoremPage() {
   };
 
   const handleSubmitDebounced = debounce(handleSubmit);
+
+  onMount(() => {
+    initLoremWorker();
+  });
+  onCleanup(() => {
+    terminateLoremWorker();
+  });
 
   return (
     <>
