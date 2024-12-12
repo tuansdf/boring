@@ -38,8 +38,6 @@ export const compressImage = async (file: File, options: COMPRESS_IMAGE_OPTIONS 
     maxWidthOrHeight: options.maxWidthOrHeight,
     initialQuality: options.quality,
     maxIteration: 10,
-    alwaysKeepResolution: true,
-    preserveExif: true,
     fileType: options.fileType,
   });
   const fileExtension = FILE_TYPE_TO_EXTENSION[options.fileType];

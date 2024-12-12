@@ -23,10 +23,12 @@ export default function LoremPage() {
     setIsLoading(false);
   };
 
-  const handleWordCountChange = (count: number) => {
-    if (!count || count < 1) count = 1;
-    if (count > 1_000_000) count = 1_000_000;
-    setWordCount(() => count);
+  const handleWordCountChange = () => {
+    setWordCount((prev) => {
+      if (!prev || prev < 1) prev = 1;
+      if (prev > 1_000_000) prev = 1_000_000;
+      return prev;
+    });
   };
 
   const handleSubmitDebounced = debounce(handleSubmit);
@@ -57,7 +59,7 @@ export default function LoremPage() {
             max={1_000_000}
             value={wordCount()}
             onInput={(e) => setWordCount(Number(e.currentTarget.value))}
-            onChange={(e) => handleWordCountChange(Number(e.currentTarget.value))}
+            onBlur={handleWordCountChange}
             containerClass="mb-3 col"
           />
         </div>

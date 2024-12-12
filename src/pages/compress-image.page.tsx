@@ -72,16 +72,30 @@ export default function CompressImagePage() {
             max={1}
             step={0.05}
             onInput={(e) => setQuality(Number(e.currentTarget.value))}
+            onBlur={() =>
+              setQuality((prev) => {
+                if (prev < 0.05) prev = 0.05;
+                if (prev > 1) prev = 1;
+                return prev;
+              })
+            }
             containerClass="col-sm"
           />
           <Input
             label="Max width or height"
             type="number"
             value={maxWidthOrHeight()}
-            min={100}
-            max={1_000_000}
+            min={10}
+            max={10_000}
             step={100}
             onInput={(e) => setMaxWidthOrHeight(Number(e.currentTarget.value))}
+            onBlur={() =>
+              setMaxWidthOrHeight((prev) => {
+                if (prev < 10) prev = 10;
+                if (prev > 10_000) prev = 10_000;
+                return prev;
+              })
+            }
             containerClass="col-sm"
           />
         </div>
