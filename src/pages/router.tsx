@@ -11,7 +11,7 @@ const routes = [
     component: lazy(() => import("@/pages/base64-decode.page.tsx")),
   },
   {
-    path: "/image-compressor",
+    path: "/compress-image",
     component: lazy(() => import("@/pages/compress-image.page.tsx")),
   },
   {

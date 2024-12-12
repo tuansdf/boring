@@ -3,19 +3,33 @@ import { FileUpload } from "@/components/ui/file-upload.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { ScreenLoading } from "@/components/ui/screen-loading.tsx";
 import { Select } from "@/components/ui/select.tsx";
+import {
+  DEFAULT_FILE_TYPE,
+  DEFAULT_MAX_SIZE,
+  DEFAULT_MAX_WIDTH_OR_HEIGHT,
+  DEFAULT_QUALITY,
+  MAX_MAX_SIZE,
+  MAX_MAX_WIDTH_OR_HEIGHT,
+  MAX_QUALITY,
+  MIN_MAX_SIZE,
+  MIN_MAX_WIDTH_OR_HEIGHT,
+  MIN_QUALITY,
+} from "@/features/compress-image/compress-image.constant.ts";
 import { COMPRESS_IMAGE_OPTIONS } from "@/features/compress-image/compress-image.type.ts";
 import {
   compressImages,
   initCompressImageWorker,
   terminateCompressImageWorker,
 } from "@/features/compress-image/compress-image.util.ts";
+import { clamp } from "@/utils/common.util.ts";
 import { downloadFile } from "@/utils/file.util.ts";
 import { createSignal, onCleanup, onMount, Show } from "solid-js";
 
 export default function CompressImagePage() {
-  const [quality, setQuality] = createSignal<number>(0.9);
-  const [maxWidthOrHeight, setMaxWidthOrHeight] = createSignal<number>(4000);
-  const [fileType, setFileType] = createSignal<string>("image/webp");
+  const [quality, setQuality] = createSignal<number>(DEFAULT_QUALITY);
+  const [maxWidthOrHeight, setMaxWidthOrHeight] = createSignal<number>(DEFAULT_MAX_WIDTH_OR_HEIGHT);
+  const [maxSize, setMaxSize] = createSignal<number>(DEFAULT_MAX_SIZE);
+  const [fileType, setFileType] = createSignal<string>(DEFAULT_FILE_TYPE);
   const [isLoading, setIsLoading] = createSignal(false);
   const [processingTime, setProcessingTime] = createSignal<number | null>(null);
 
@@ -29,6 +43,7 @@ export default function CompressImagePage() {
         quality: quality(),
         maxWidthOrHeight: maxWidthOrHeight(),
         fileType: fileType(),
+        maxSize: maxSize(),
       };
       const compressedFiles = await compressImages({ files, options: compressOptions });
       compressedFiles.forEach((file) => {
@@ -60,7 +75,7 @@ export default function CompressImagePage() {
           onInput={(e) => handleCompressImages(e.currentTarget.files as File[] | null)}
         />
         <div class="row gap-3 gap-sm-0 mt-3">
-          <Select containerClass="col-sm" label="File type" onInput={(e) => setFileType(e.currentTarget.value)}>
+          <Select containerClass="col-md" label="File type" onInput={(e) => setFileType(e.currentTarget.value)}>
             <option value="image/webp">webp</option>
             <option value="image/jpeg">jpeg</option>
           </Select>
@@ -68,35 +83,34 @@ export default function CompressImagePage() {
             label="Quality"
             type="number"
             value={quality()}
-            min={0.05}
-            max={1}
+            min={MIN_QUALITY}
+            max={MAX_QUALITY}
             step={0.05}
             onInput={(e) => setQuality(Number(e.currentTarget.value))}
-            onBlur={() =>
-              setQuality((prev) => {
-                if (prev < 0.05) prev = 0.05;
-                if (prev > 1) prev = 1;
-                return prev;
-              })
-            }
-            containerClass="col-sm"
+            onBlur={() => setQuality((prev) => clamp(prev, MIN_QUALITY, MAX_QUALITY))}
+            containerClass="col-md"
           />
           <Input
             label="Max width or height"
             type="number"
             value={maxWidthOrHeight()}
-            min={10}
-            max={10_000}
+            min={MIN_MAX_WIDTH_OR_HEIGHT}
+            max={MAX_MAX_WIDTH_OR_HEIGHT}
             step={100}
             onInput={(e) => setMaxWidthOrHeight(Number(e.currentTarget.value))}
-            onBlur={() =>
-              setMaxWidthOrHeight((prev) => {
-                if (prev < 10) prev = 10;
-                if (prev > 10_000) prev = 10_000;
-                return prev;
-              })
-            }
-            containerClass="col-sm"
+            onBlur={() => setMaxWidthOrHeight((prev) => clamp(prev, MIN_MAX_WIDTH_OR_HEIGHT, MAX_MAX_WIDTH_OR_HEIGHT))}
+            containerClass="col-md"
+          />
+          <Input
+            label="Max size (MB)"
+            type="number"
+            value={maxSize()}
+            min={MIN_MAX_SIZE}
+            max={MAX_MAX_SIZE}
+            step={0.5}
+            onInput={(e) => setMaxSize(Number(e.currentTarget.value))}
+            onBlur={() => setMaxSize((prev) => clamp(prev, MIN_MAX_SIZE, MAX_MAX_SIZE))}
+            containerClass="col-md"
           />
         </div>
         <Show when={processingTime() === 0 || processingTime()}>

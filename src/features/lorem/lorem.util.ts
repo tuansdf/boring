@@ -1,10 +1,10 @@
+import { MAX_WORD_COUNT, MIN_WORD_COUNT } from "@/features/lorem/lorem.constant.ts";
 import LoremWorker from "@/features/lorem/lorem.worker.ts?worker";
+import { clamp } from "@/utils/common.util.ts";
 
 let worker: Worker | null = null;
 
 export const generateLorem = async (wordCount: number): Promise<string> => {
-  if (wordCount < 1) wordCount = 1;
-  if (wordCount > 1_000_000) wordCount = 1_000_000;
   return new Promise((res) => {
     if (!worker) {
       worker = new LoremWorker();
@@ -15,7 +15,7 @@ export const generateLorem = async (wordCount: number): Promise<string> => {
     worker.onerror = () => {
       res("");
     };
-    worker.postMessage(wordCount);
+    worker.postMessage(clamp(wordCount, MIN_WORD_COUNT, MAX_WORD_COUNT));
   });
 };
 

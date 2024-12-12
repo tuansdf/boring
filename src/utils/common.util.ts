@@ -19,3 +19,9 @@ export const debounce = <TFn extends (...args: any[]) => any>(
     timeout = setTimeout(() => fn(...args), ms);
   };
 };
+
+export const clamp = (val: number, min: number, max: number) => {
+  if (val < min) val = min;
+  if (val > max) val = max;
+  return val;
+};
