@@ -17,7 +17,7 @@ import {
 } from "@/features/compress-image/compress-image.constant.ts";
 import { COMPRESS_IMAGE_OPTIONS } from "@/features/compress-image/compress-image.type.ts";
 import {
-  compressImages,
+  compressImagesWorker,
   initCompressImageWorker,
   terminateCompressImageWorker,
 } from "@/features/compress-image/compress-image.util.ts";
@@ -45,7 +45,7 @@ export default function CompressImagePage() {
         fileType: fileType(),
         maxSize: maxSize(),
       };
-      const compressedFiles = await compressImages({ files, options: compressOptions });
+      const compressedFiles = await compressImagesWorker({ files, options: compressOptions });
       compressedFiles.forEach((file) => {
         downloadFile(file);
       });

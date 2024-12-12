@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { ScreenLoading } from "@/components/ui/screen-loading.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
-import { generateLorem, initLoremWorker, terminateLoremWorker } from "@/features/lorem/lorem.util.ts";
+import { generateLoremWordsWorker, initLoremWorker, terminateLoremWorker } from "@/features/lorem/lorem.util.ts";
 import { debounce } from "@/utils/common.util.ts";
 import { createSignal, onCleanup, onMount, Show } from "solid-js";
 
@@ -18,7 +18,7 @@ export default function LoremPage() {
     await new Promise((r) => setTimeout(r, 100));
     const start = performance.now();
     let count = wordCount();
-    setOutput(await generateLorem(count));
+    setOutput(await generateLoremWordsWorker(count));
     setProcessingTime(performance.now() - start);
     setIsLoading(false);
   };

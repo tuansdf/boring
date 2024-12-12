@@ -1,8 +1,8 @@
-import { faker } from "@faker-js/faker";
+import { generateLoremWords } from "@/features/lorem/lorem.util.ts";
 
 self.onmessage = async function (e) {
   try {
-    postMessage(faker.lorem.words(Number(e.data) || 3));
+    postMessage(generateLoremWords(e.data));
   } catch {
     postMessage("");
   }
