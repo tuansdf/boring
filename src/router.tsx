@@ -3,6 +3,10 @@ import { lazy } from "solid-js";
 
 const routes = [
   {
+    path: "/",
+    component: lazy(() => import("@/pages/index.page.tsx")),
+  },
+  {
     path: "/base64-encode",
     component: lazy(() => import("@/pages/base64-encode.page.tsx")),
   },
