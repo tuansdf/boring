@@ -76,8 +76,8 @@ export default function CompressImagePage() {
         />
         <div class="row gap-3 gap-sm-0 mt-3">
           <Select containerClass="col-md" label="File type" onInput={(e) => setFileType(e.currentTarget.value)}>
-            <option value="image/webp">webp</option>
             <option value="image/jpeg">jpeg</option>
+            <option value="image/webp">webp</option>
           </Select>
           <Input
             label="Quality"

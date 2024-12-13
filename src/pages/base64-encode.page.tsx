@@ -49,7 +49,7 @@ export default function Base64EncodePage() {
               }}
             />
             <Checkbox
-              label="Compress with zlib before encode"
+              label="Compress with zlib before encoding"
               checked={withCompression()}
               onInput={(e) => {
                 setWithCompression(e.currentTarget.checked);

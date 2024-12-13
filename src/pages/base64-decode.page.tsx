@@ -53,7 +53,9 @@ export default function Base64DecodePage() {
 
       <div class="container-xxl p-3">
         <Show when={errorMessage()}>
-          <Alert variant="danger">{errorMessage()}</Alert>
+          <Alert variant="danger" class="mb-3">
+            {errorMessage()}
+          </Alert>
         </Show>
         <form class="d-flex flex-column gap-3">
           <Textarea
@@ -76,7 +78,7 @@ export default function Base64DecodePage() {
               }}
             />
             <Checkbox
-              label="Decompress with zlib after decode"
+              label="Decompress with zlib after decoding"
               checked={withCompression()}
               onInput={(e) => {
                 handleWithCompressionChange(e.currentTarget.checked);
