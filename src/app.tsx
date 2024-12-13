@@ -1,4 +1,4 @@
-import { Router } from "@/pages/router.tsx";
+import { Router } from "@/router.tsx";
 
 export default function App() {
   return (

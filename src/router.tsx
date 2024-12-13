@@ -23,6 +23,10 @@ const routes = [
     component: lazy(() => import("@/pages/lorem.page.tsx")),
   },
   {
+    path: "/qr-code-generator",
+    component: lazy(() => import("@/pages/qr-code-generator.page.tsx")),
+  },
+  {
     path: "/*",
     component: () => <Navigate href="/" />,
   },
