@@ -21,6 +21,7 @@ export default function QrCodeGeneratorPage() {
   };
 
   createEffect(async () => {
+    if (!content()) return;
     await QRCode.toCanvas(document.getElementById(id), content(), { width: 320, errorCorrectionLevel: "H", margin: 2 });
   });
 
