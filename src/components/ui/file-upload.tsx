@@ -2,12 +2,14 @@ import { cn } from "@/utils/classnames.ts";
 import { ComponentProps, createUniqueId, splitProps } from "solid-js";
 import classes from "./file-upload.module.scss";
 
-type Props = ComponentProps<"input">;
+type Props = {
+  onFiles: (files: File[] | null) => any | Promise<any>;
+} & ComponentProps<"input">;
 
 export const FileUpload = (props: Props) => {
   const id = createUniqueId();
   let inputRef!: HTMLInputElement;
-  const [local, others] = splitProps(props, ["class", "type", "onInput", "id"]);
+  const [local, others] = splitProps(props, ["class", "type", "onFiles", "onInput", "id"]);
 
   return (
     <>
@@ -22,10 +24,10 @@ export const FileUpload = (props: Props) => {
           type="file"
           class={classes["input"]}
           onInput={async (e) => {
-            if (typeof local.onInput === "function") {
-              await local.onInput?.(e);
-            }
+            let files = e.currentTarget.files as File[] | null;
+            if (files) files = [...files];
             inputRef.value = "";
+            await local.onFiles(files);
           }}
           {...others}
         />

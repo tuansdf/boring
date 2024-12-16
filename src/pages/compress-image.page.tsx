@@ -35,7 +35,7 @@ export default function CompressImagePage() {
 
   const handleCompressImages = async (files: File[] | null) => {
     try {
-      if (!files) return;
+      if (!files?.length) return;
       setIsLoading(true);
       await new Promise((r) => setTimeout(r, 100));
       const start = performance.now();
@@ -69,13 +69,14 @@ export default function CompressImagePage() {
       <Header title="Compress Image" />
 
       <div class="container-xxl p-3">
-        <FileUpload
-          accept="image/*"
-          multiple
-          onInput={(e) => handleCompressImages(e.currentTarget.files as File[] | null)}
-        />
+        <FileUpload accept="image/*" multiple onFiles={handleCompressImages} />
         <div class="row gap-3 gap-sm-0 mt-3">
-          <Select containerClass="col-md" label="File type" onInput={(e) => setFileType(e.currentTarget.value)}>
+          <Select
+            containerClass="col-md"
+            label="File type"
+            value={fileType()}
+            onInput={(e) => setFileType(e.currentTarget.value)}
+          >
             <option value="image/jpeg">jpeg</option>
             <option value="image/webp">webp</option>
           </Select>

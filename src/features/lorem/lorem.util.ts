@@ -29,6 +29,6 @@ export const terminateLoremWorker = () => {
   worker = null;
 };
 
-export const generateLoremWords = (wordCount: number) => {
+export const generateLoremWords = (wordCount: number): string => {
   return faker.lorem.words(Number(clamp(wordCount, MIN_WORD_COUNT, MAX_WORD_COUNT)) || 3);
 };

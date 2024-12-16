@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { ScreenLoading } from "@/components/ui/screen-loading.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
+import { MAX_WORD_COUNT, MIN_WORD_COUNT } from "@/features/lorem/lorem.constant.ts";
 import { generateLoremWordsWorker, initLoremWorker, terminateLoremWorker } from "@/features/lorem/lorem.util.ts";
 import { debounce } from "@/utils/common.util.ts";
 import { createSignal, onCleanup, onMount, Show } from "solid-js";
@@ -25,8 +26,8 @@ export default function LoremPage() {
 
   const handleWordCountChange = () => {
     setWordCount((prev) => {
-      if (!prev || prev < 1) prev = 1;
-      if (prev > 1_000_000) prev = 1_000_000;
+      if (!prev || prev < MIN_WORD_COUNT) prev = MIN_WORD_COUNT;
+      if (prev > MAX_WORD_COUNT) prev = MAX_WORD_COUNT;
       return prev;
     });
   };
@@ -55,8 +56,8 @@ export default function LoremPage() {
           <Input
             label="Word count"
             type="number"
-            min={1}
-            max={1_000_000}
+            min={MIN_WORD_COUNT}
+            max={MAX_WORD_COUNT}
             value={wordCount()}
             onInput={(e) => setWordCount(Number(e.currentTarget.value))}
             onBlur={handleWordCountChange}
