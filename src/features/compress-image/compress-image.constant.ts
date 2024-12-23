@@ -1,6 +1,6 @@
 export const DEFAULT_FILE_TYPE = "image/jpeg";
 
-export const DEFAULT_QUALITY = 0.8;
+export const DEFAULT_QUALITY = 0.9;
 export const MIN_QUALITY = 0.01;
 export const MAX_QUALITY = 1;
 
